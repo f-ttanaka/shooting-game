@@ -40,6 +40,7 @@ library
   build-depends:
       aeson
     , base >=4.7 && <5
+    , binary
     , bytestring
     , containers
     , http-types
@@ -65,6 +66,7 @@ executable server-hs-exe
   build-depends:
       aeson
     , base >=4.7 && <5
+    , binary
     , bytestring
     , containers
     , http-types
@@ -92,6 +94,7 @@ test-suite server-hs-test
   build-depends:
       aeson
     , base >=4.7 && <5
+    , binary
     , bytestring
     , containers
     , http-types

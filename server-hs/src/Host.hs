@@ -10,6 +10,7 @@ import Control.Monad
 import Control.Monad.IO.Class
 import Control.Concurrent (MVar, newMVar, modifyMVar_, modifyMVar, readMVar)
 import Data.List (nub)
+import Data.ByteString.Lazy.Char8 (pack)
 
 type Client = (Text, Connection)
 type ServerState = [Connection]
@@ -17,7 +18,7 @@ type ServerState = [Connection]
 addClient :: Connection -> ServerState -> ServerState
 addClient conn clients = conn : clients
 
-broadcast :: Text -> ServerState -> IO ()
+broadcast :: Msg -> ServerState -> IO ()
 broadcast message clients = 
     forM_ clients $ \conn -> sendTextData conn message
 
@@ -28,9 +29,9 @@ gameLoop state pendingConn = do
     putStrLn "connected"
     modifyMVar_ state $ \conns -> return (addClient conn conns)
     forever $ do
-        msg <- receiveData conn :: IO Text
+        msg <- receiveData conn :: IO Msg
         conns' <- readMVar state
-        print $ msg
+        print msg
         broadcast msg conns'
 
 runHost :: IO ()
